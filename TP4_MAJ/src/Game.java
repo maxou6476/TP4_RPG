@@ -28,9 +28,8 @@ public class Game {
         while (defaite != 1) {
             etageCombat++;
             System.out.println("lancement du combat - étage " + etageCombat);
-            generateCombat(etageCombat);
+            defaite = generateCombat(etageCombat);
             upgradeHero();
-
         }
 
         System.out.println("fin du jeu");
@@ -44,7 +43,7 @@ public class Game {
         int choix_attaque;
         int choixConssomable;
         int vieBasicEnemy = 48 + levelCombat * 2;
-        int damageBasicEnemy = 70;
+        int damageBasicEnemy = 10;
 
         for (int i = 1; i < levelCombat + 3; i++) {
             if (i % 5 == 0) {
@@ -53,9 +52,12 @@ public class Game {
                 enemies.add(new BasicEnemy(vieBasicEnemy, damageBasicEnemy)); //generation du nombre d'énemies (étage + 2)
             }
         }
-        while (enemies.size() != 0) {
+        while (heroes.size() != 0 && enemies.size() !=0)
+        {
+            System.out.println(enemies.size() + " " + heroes.size());
 
-            System.out.println("\nétat du terrain :\nennemies :");
+            System.out.println("\n----------------------------------------état du terrain -------------------------------------------" +
+                    "\nennemies :");
             for (int j = 0; j < enemies.size(); j++) {
                 System.out.println(j + 1 + " - " + enemies.get(j).toString());
             }
@@ -92,11 +94,27 @@ public class Game {
                     System.out.println("utiliser une potions ou de la nourriture ?\n1 - potion de vie\n2 - potion de mana\n3 - steak\n4 -retour arriere");
                     choixConssomable = scanner.nextInt();
                     if (choixConssomable == 1) {
-                        //System.out.println(potions.get(heroturn).bottleUse()); //marche pas mdr la fonction appelé n'est pas la bonne
-                    } else if (choixConssomable == 2) {
-                        //test234
+                        for(int i = 0;i<heroes.get(heroturn).potions.size();i++)
+                        {
+                            if (heroes.get(heroturn).potions.get(i) instanceof LifeBottle)
+                            {
+                                heroes.get(heroturn).potions.remove(i);
+                                i = heroes.size();
+                            }
+                        }
+                    } else if (choixConssomable == 2){
+                        for(int i = 0;i<heroes.get(heroturn).potions.size();i++)
+                        {
+                            if (heroes.get(heroturn).potions.get(i) instanceof ManaBottle)
+                            {
+                                System.out.println("buteille de mana  : " + i);
+                                heroes.get(heroturn).potions.remove(i);
+                                i = heroes.size();
+                            }
+                        }
 
                     } else if (choixConssomable == 3) {
+
 
                     } else if (choixConssomable == 4) {
 
@@ -107,20 +125,22 @@ public class Game {
 
             System.out.println("tour de l'énemies");
             for (int enemiTurn = 0; enemiTurn < enemies.size(); enemiTurn++) {
-                choix_attaque = new Random().nextInt(heroes.size());
-                if (heroes.get(choix_attaque) instanceof Hunter) {
-                    heroes.set(choix_attaque, ((Hunter) heroes.get(choix_attaque))).takedamage(enemies.get(enemiTurn).attack());
-                } else if (heroes.get(choix_attaque) instanceof Warrior) {
-                    heroes.set(choix_attaque, ((Warrior) heroes.get(choix_attaque))).takedamage(enemies.get(enemiTurn).attack());
-                } else if (heroes.get(choix_attaque) instanceof Mage) {
-                    heroes.set(choix_attaque, ((Mage) heroes.get(choix_attaque))).takedamage(enemies.get(enemiTurn).attack());
-                } else if (heroes.get(choix_attaque) instanceof Healer) {
-                    heroes.set(choix_attaque, ((Healer) heroes.get(choix_attaque))).takedamage(enemies.get(enemiTurn).attack());
-                }
+                if(heroes.size() !=0) {
+                    choix_attaque = new Random().nextInt(heroes.size());
+                    if (heroes.get(choix_attaque) instanceof Hunter) {
+                        heroes.set(choix_attaque, ((Hunter) heroes.get(choix_attaque))).takedamage(enemies.get(enemiTurn).attack());
+                    } else if (heroes.get(choix_attaque) instanceof Warrior) {
+                        heroes.set(choix_attaque, ((Warrior) heroes.get(choix_attaque))).takedamage(enemies.get(enemiTurn).attack());
+                    } else if (heroes.get(choix_attaque) instanceof Mage) {
+                        heroes.set(choix_attaque, ((Mage) heroes.get(choix_attaque))).takedamage(enemies.get(enemiTurn).attack());
+                    } else if (heroes.get(choix_attaque) instanceof Healer) {
+                        heroes.set(choix_attaque, ((Healer) heroes.get(choix_attaque))).takedamage(enemies.get(enemiTurn).attack());
+                    }
 
-                if (heroes.get(choix_attaque).getLifePoints() <= 0) {
-                    heroes.remove(choix_attaque);
-                    System.out.println("tu as perdu un hero !, il te reste (" + heroes.size() + ") hero");
+                    if (heroes.get(choix_attaque).getLifePoints() <= 0) {
+                        heroes.remove(choix_attaque);
+                        System.out.println("tu as perdu un hero !, il te reste (" + heroes.size() + ") hero");
+                    }
                 }
 
             }
@@ -130,9 +150,13 @@ public class Game {
             }
 
         }
+        System.out.println(heroes.size());
+        if(heroes.size() == 0){
 
-
-        return 1;
+            return 1;
+        }else{
+            return 0;
+        }
     }
 
     public void upgradeHero() {

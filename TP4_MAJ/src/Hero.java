@@ -37,6 +37,7 @@ public abstract class Hero {
     }
 
     public void takedamage(int damage) {
+
         lifePoints -= damage;
     }
 
