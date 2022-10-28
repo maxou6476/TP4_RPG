@@ -20,10 +20,10 @@ public class Game {
         System.out.println("démarrage du jeu :");
         System.out.println("création de vos 4 héros : ");
 
-        heroes.add(new Hunter(100, 3, 10, 10,0,0,0,0));
-        heroes.add(new Warrior(140, 5, 10,0,0,0,0));
-        heroes.add(new Mage(140, 2, 10, 0,0,0,200));
-        heroes.add(new Healer(140, 2, 10, 0,0,0,200));
+        heroes.add(new Hunter(100, 3, 10, 10, 0, 0, 0, 0));
+        heroes.add(new Warrior(140, 5, 10, 0, 0, 0, 0));
+        heroes.add(new Mage(140, 2, 10, 0, 0, 0, 200));
+        heroes.add(new Healer(140, 2, 10, 0, 0, 0, 200));
 
         while (defaite != 1) {
             etageCombat++;
@@ -43,7 +43,7 @@ public class Game {
         int choix_attaque;
         int choixConssomable;
         int vieBasicEnemy = 48 + levelCombat * 2;
-        int damageBasicEnemy = 10;
+        int damageBasicEnemy = 5 + levelCombat;
 
         for (int i = 1; i < levelCombat + 3; i++) {
             if (i % 5 == 0) {
@@ -52,12 +52,14 @@ public class Game {
                 enemies.add(new BasicEnemy(vieBasicEnemy, damageBasicEnemy)); //generation du nombre d'énemies (étage + 2)
             }
         }
-        while (heroes.size() != 0 && enemies.size() !=0)
-        {
-            System.out.println(enemies.size() + " " + heroes.size());
 
-            System.out.println("\n----------------------------------------état du terrain -------------------------------------------" +
-                    "\nennemies :");
+
+        while (heroes.size() != 0 && enemies.size() != 0) {
+
+            System.out.println("""
+
+                    ----------------------------------------état du terrain -------------------------------------------
+                    ennemies :""");
             for (int j = 0; j < enemies.size(); j++) {
                 System.out.println(j + 1 + " - " + enemies.get(j).toString());
             }
@@ -94,20 +96,16 @@ public class Game {
                     System.out.println("utiliser une potions ou de la nourriture ?\n1 - potion de vie\n2 - potion de mana\n3 - steak\n4 -retour arriere");
                     choixConssomable = scanner.nextInt();
                     if (choixConssomable == 1) {
-                        for(int i = 0;i<heroes.get(heroturn).potions.size();i++)
-                        {
-                            if (heroes.get(heroturn).potions.get(i) instanceof LifeBottle)
-                            {
+                        for (int i = 0; i < heroes.get(heroturn).potions.size(); i++) {
+                            if (heroes.get(heroturn).potions.get(i) instanceof LifeBottle) {
                                 heroes.get(heroturn).potions.remove(i);
                                 i = heroes.size();
                             }
                         }
-                    } else if (choixConssomable == 2){
-                        for(int i = 0;i<heroes.get(heroturn).potions.size();i++)
-                        {
-                            if (heroes.get(heroturn).potions.get(i) instanceof ManaBottle)
-                            {
-                                System.out.println("buteille de mana  : " + i);
+                    } else if (choixConssomable == 2) {
+                        for (int i = 0; i < heroes.get(heroturn).potions.size(); i++) {
+                            if (heroes.get(heroturn).potions.get(i) instanceof ManaBottle) {
+                                System.out.println("bouteille de mana  : " + i);
                                 heroes.get(heroturn).potions.remove(i);
                                 i = heroes.size();
                             }
@@ -123,9 +121,9 @@ public class Game {
             }
 
 
-            System.out.println("tour de l'énemies");
+            System.out.println("tour de l'énemie");
             for (int enemiTurn = 0; enemiTurn < enemies.size(); enemiTurn++) {
-                if(heroes.size() !=0) {
+                if (heroes.size() != 0) {
                     choix_attaque = new Random().nextInt(heroes.size());
                     if (heroes.get(choix_attaque) instanceof Hunter) {
                         heroes.set(choix_attaque, ((Hunter) heroes.get(choix_attaque))).takedamage(enemies.get(enemiTurn).attack());
@@ -151,10 +149,10 @@ public class Game {
 
         }
         System.out.println(heroes.size());
-        if(heroes.size() == 0){
+        if (heroes.size() == 0) {
 
             return 1;
-        }else{
+        } else {
             return 0;
         }
     }
