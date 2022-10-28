@@ -94,7 +94,7 @@ public class Game {
                     if (choixConssomable == 1) {
                         //System.out.println(potions.get(heroturn).bottleUse()); //marche pas mdr la fonction appelé n'est pas la bonne
                     } else if (choixConssomable == 2) {
-                        //test23
+                        //test234
 
                     } else if (choixConssomable == 3) {
 
