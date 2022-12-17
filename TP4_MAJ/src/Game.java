@@ -3,40 +3,57 @@ import java.util.List;
 import java.util.Random;
 import java.util.Scanner;
 
-public class Game {
+public class Game
+{
     List<Hero> heroes = new ArrayList<>();
     List<Potion> potions = new ArrayList<>();
     List<Food> foods = new ArrayList<>();
     List<Enemy> enemies = new ArrayList<>();
-    private boolean playerTurn = true;
     private InputParser inputParser;
     private int etageCombat = 0;
     private int defaite = 0;
 
-    public Game() {
-    }
 
-    public void playGame() {
+
+    public void playGame()
+    {
         System.out.println("démarrage du jeu :");
-        System.out.println("création de vos 4 héros : ");
+        System.out.println("création de vos héros : ");
 
-        heroes.add(new Hunter(100, 3, 10, 10, 0, 0, 0, 0));
-        heroes.add(new Warrior(140, 5, 10, 0, 0, 0, 0));
-        heroes.add(new Mage(140, 2, 10, 0, 0, 0, 200));
-        heroes.add(new Healer(140, 2, 10, 0, 0, 0, 200));
+        System.out.println("combien de héros veux-tu ?");
+
+        Scanner scanner = new Scanner(System.in);
+        int nb_heros = scanner.nextInt();
+
+        for(int i=0;i<nb_heros;i++) {
+            System.out.println("1 : Warrior\n2 : Hunter\n3 : Mage\n4 : Healer");
+            int ch_hero = scanner.nextInt();
+            if(ch_hero == 1){
+                heroes.add(new Warrior(140, 5, 10, 0, 0, 0, 0));
+            }else if(ch_hero == 2){
+                heroes.add(new Hunter(100, 3, 10, 10, 0, 0, 0, 0));
+            }else if(ch_hero == 3){
+                heroes.add(new Mage(140, 2, 10, 0, 0, 0, 200));
+            }else if(ch_hero == 4){
+                heroes.add(new Healer(140, 2, 10, 0, 0, 0, 200));
+            }else{
+                i--;
+                System.out.println("erreur de choix, recommence");
+            }
+        }
 
         while (defaite != 1) {
             etageCombat++;
             System.out.println("lancement du combat - étage " + etageCombat);
             defaite = generateCombat(etageCombat);
-            upgradeHero();
         }
 
         System.out.println("fin du jeu");
 
     }
 
-    public int generateCombat(int levelCombat) {
+    public int generateCombat(int levelCombat)
+    {
         Scanner scanner = new Scanner(System.in);
         System.out.println("Phase de combat");
         int choix_action;
@@ -110,12 +127,6 @@ public class Game {
                                 i = heroes.size();
                             }
                         }
-
-                    } else if (choixConssomable == 3) {
-
-
-                    } else if (choixConssomable == 4) {
-
                     }
                 }
             }
@@ -157,7 +168,4 @@ public class Game {
         }
     }
 
-    public void upgradeHero() {
-
-    }
 }
